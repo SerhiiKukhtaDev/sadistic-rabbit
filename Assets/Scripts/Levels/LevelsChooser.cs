@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Interfaces;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -6,16 +7,17 @@ namespace Levels
 {
     public class LevelsChooser : MonoBehaviour
     {
-        [SerializeField] private Level startLevel;
         [SerializeField] private List<Level> levels;
         [SerializeField] private Transform container;
         [SerializeField] private LevelView template;
-        
+
+        private IItemRenderer _renderer;
         private List<LevelView> _levelsViews;
 
         private void Awake()
         {
             _levelsViews = new List<LevelView>();
+            _renderer = GetComponent<IItemRenderer>();
 
             levels.ForEach(AddToLevelsList);
         }
@@ -32,9 +34,8 @@ namespace Levels
 
         void AddToLevelsList(Level level)
         {
-            LevelView levelView = Instantiate(template, container);
-            levelView.Render(level);
-            
+            var levelView = _renderer.Render(template, level, container);
+
             _levelsViews.Add(levelView);
         }
 

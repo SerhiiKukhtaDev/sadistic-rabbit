@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace Player.Weapons.View
 {
-    public class WeaponView : MonoBehaviour, IView, IRenderedDynamic<Weapon>
+    public class WeaponView : MonoBehaviour, IView, IRenderedDynamic
     {
         [SerializeField] private Text label;
         [SerializeField] private Image image;
@@ -41,8 +41,9 @@ namespace Player.Weapons.View
             buyButton.interactable = false;
         }
 
-        public void Render(Weapon weapon)
+        public void Render(IRenderView template)
         {
+            Weapon weapon = (Weapon)template;
             _weapon = weapon;
             
             label.text = weapon.Name;

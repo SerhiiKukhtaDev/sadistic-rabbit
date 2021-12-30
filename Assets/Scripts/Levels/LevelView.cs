@@ -1,10 +1,11 @@
+using Interfaces;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Levels
 {
-    public class LevelView : MonoBehaviour
+    public class LevelView : MonoBehaviour, IRenderedDynamic
     {
         [SerializeField] private new Text name;
         [SerializeField] private Image image;
@@ -12,7 +13,7 @@ namespace Levels
 
         public UnityAction<int, string> GoToLevelButtonClick { get; set; }
 
-        private Level _level;
+        private IRenderLevel _level;
 
         void TryLock()
         {
@@ -25,8 +26,9 @@ namespace Levels
             goToLevelButton.onClick.AddListener(OnGoToLevelButtonClick);
         }
 
-        public void Render(Level level)
+        public void Render(IRenderView template)
         {
+            var level = (IRenderLevel) template;
             _level = level;
             
             name.text = level.Name;

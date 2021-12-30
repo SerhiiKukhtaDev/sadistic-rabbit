@@ -1,8 +1,9 @@
+using Interfaces;
 using UnityEngine;
 
 namespace Levels
 {
-    public class Level : MonoBehaviour
+    public class Level : MonoBehaviour, IRenderLevel
     {
         [SerializeField] private int id;
         [SerializeField] private new string name;
