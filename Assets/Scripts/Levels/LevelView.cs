@@ -11,7 +11,7 @@ namespace Levels
         [SerializeField] private Image image;
         [SerializeField] private Button goToLevelButton;
 
-        public UnityAction<int, string> GoToLevelButtonClick { get; set; }
+        public static UnityAction<int, string> GoToLevelButtonClick { get; set; }
 
         private IRenderLevel _level;
 

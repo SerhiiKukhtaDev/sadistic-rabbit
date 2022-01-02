@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Interfaces;
+using Render;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,32 +12,24 @@ namespace Levels
         [SerializeField] private Transform container;
         [SerializeField] private LevelView template;
 
-        private IItemRenderer _renderer;
-        private List<LevelView> _levelsViews;
-
         private void Awake()
         {
-            _levelsViews = new List<LevelView>();
-            _renderer = GetComponent<IItemRenderer>();
-
-            levels.ForEach(AddToLevelsList);
+            levels.ForEach(AddToLevels);
         }
 
         private void OnEnable()
         {
-            _levelsViews.ForEach(view => view.GoToLevelButtonClick += GoToLevel);
+            LevelView.GoToLevelButtonClick += GoToLevel;
         }
         
         private void OnDisable()
         {
-            _levelsViews.ForEach(view => view.GoToLevelButtonClick -= GoToLevel);
+            LevelView.GoToLevelButtonClick -= GoToLevel;
         }
 
-        void AddToLevelsList(Level level)
+        void AddToLevels(Level level)
         {
-            var levelView = _renderer.Render(template, level, container);
-
-            _levelsViews.Add(levelView);
+            ItemRenderer.Render(template, level, container);
         }
 
         void GoToLevel(int levelId, string sceneName)

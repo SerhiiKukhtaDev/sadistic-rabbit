@@ -14,7 +14,7 @@ namespace Player.Weapons.View
         [SerializeField] private Text price;
         [SerializeField] private Button buyButton;
 
-        public UnityAction<Weapon, WeaponView> OnSellButtonClick { get; set; }
+        public static UnityAction<Weapon> SellButtonClick { get; set; }
 
         private Weapon _weapon;
 
@@ -49,12 +49,13 @@ namespace Player.Weapons.View
             label.text = weapon.Name;
             image.sprite = weapon.Sprite;
             price.text = weapon.Price.ToString();
+            
             TryLockItem();
         }
 
         private void ButtonClick()
         {
-            OnSellButtonClick?.Invoke(_weapon, this);
+            SellButtonClick?.Invoke(_weapon);
         }
     }
 }

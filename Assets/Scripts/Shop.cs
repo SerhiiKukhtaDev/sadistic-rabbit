@@ -3,6 +3,7 @@ using Comparers;
 using Player;
 using Player.Weapons.Base;
 using Player.Weapons.View;
+using Render;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -31,24 +32,25 @@ public class Shop : MonoBehaviour
 
     private void OnEnable()
     {
+        WeaponView.SellButtonClick += TrySellWeapon;
+        
         shopEntered?.Invoke();
         shopExit.AddListener(OnExit);
     }
 
     private void OnDisable()
     {
+        WeaponView.SellButtonClick -= TrySellWeapon;
+        
         shopExit?.Invoke();
     }
 
     private void AddToShop(Weapon weapon)
     {
-        WeaponView weaponView = Instantiate(template, container.transform);
-        weaponView.Render(weapon);
-        
-        weaponView.OnSellButtonClick += TrySellWeapon;
+        ItemRenderer.Render(template, weapon, container.transform);
     }
 
-    private void TrySellWeapon(Weapon weapon, WeaponView view)
+    private void TrySellWeapon(Weapon weapon)
     {
         if(player.Score < weapon.Price) return;
         
@@ -56,8 +58,6 @@ public class Shop : MonoBehaviour
         weapon.Buy();
         
         _boughtWeapons.Add(weapon);
-        
-        view.OnSellButtonClick -= TrySellWeapon;
 
         if (hideOnBuy)
         {
